@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "3a3edc7a-f439-4bd7-8675-9c249079143a",
+		"name": "billablehrs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ParseCSVFile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " \"RW1wbG95ZWUgSUQsQmlsbGFibGUgUmF0ZSAocGVyIGhvdXIpLFByb2plY3QsRGF0ZSxTdGFydCBUaW1lLEVuZCBUaW1lCjEsMzAwLEdvb2dsZSwyMDE5LTA3LTAxLDA5OjAwLDE3OjAwCjIsMTAwLEZhY2Vib29rLDIwMTktMDctMDEsMTE6MDAsMTY6MDA=\""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/invoice/parse",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"invoice",
+						"parse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ParseInvalidCSVFile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " \"RW1wbG95ZWUgSUQsQmlsbGFibGUgUmF0ZSAocGVyIGhvdXIpLFByb2plY3QsRGF0ZSxTdGFydCBUaW1lLEVuZCBUaW1lCjEsMzAwLEdvb2dsZSwyMDE5LTA3LTAxLDA5OjAwLDE3OjAwCjIsMTAwLEZhY2Vib29rLDIwMTktMDctMDEsMTE6MDAsMTY6MDA=\""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/invoice/parse",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"invoice",
+						"parse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetInvoiceParsingResult",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/invoice/{{invoice_id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"invoice",
+						"{{invoice_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCompanyDetails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var contentTypeHeaderExists = responseHeaders.hasOwnProperty(\"Content-Type\");\r",
+							"\r",
+							"tests[\"Has Content-Type\"] = contentTypeHeaderExists;\r",
+							"\r",
+							"if (contentTypeHeaderExists) {\r",
+							"    tests[\"Content-Type is application/json\"] = \r",
+							"      responseHeaders[\"Content-Type\"].has(\"application/json\");\r",
+							"}\r",
+							"\r",
+							"\r",
+							"pm.test(\"companies\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Google\");\r",
+							"});\r",
+							"pm.test(\"employeeId\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"1\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"ratePerHour\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"300.00\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"hoursWorked\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"8\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/invoice/{{invoice_id}}/company?companyName=Google&=",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"invoice",
+						"{{invoice_id}}",
+						"company"
+					],
+					"query": [
+						{
+							"key": "companyName",
+							"value": "Google"
+						},
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
